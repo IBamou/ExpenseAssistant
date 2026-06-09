@@ -4,20 +4,20 @@ namespace App\Enums;
 
 enum ExpenseCategory: string
 {
-    case Alimentaire = 'alimentaire';
-    case Boissons = 'boissons';
-    case Hygiene = 'hygiène';
-    case Entretien = 'entretien';
-    case Autre = 'autre';
+    case Food = 'food';
+    case Drinks = 'drinks';
+    case Hygiene = 'hygiene';
+    case Cleaning = 'cleaning';
+    case Other = 'other';
 
     public function label(): string
     {
         return match ($this) {
-            self::Alimentaire => 'Food',
-            self::Boissons => 'Beverages',
+            self::Food => 'Food',
+            self::Drinks => 'Beverages',
             self::Hygiene => 'Hygiene',
-            self::Entretien => 'Maintenance',
-            self::Autre => 'Other',
+            self::Cleaning => 'Cleaning',
+            self::Other => 'Other',
         };
     }
 }
