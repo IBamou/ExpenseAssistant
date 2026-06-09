@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ReceiptStatus;
 use App\Http\Requests\StoreReceiptRequest;
+use App\Jobs\ExtractExpenses;
 use App\Models\Receipt;
 
 class ReceiptController extends Controller
@@ -24,9 +26,13 @@ class ReceiptController extends Controller
 
     public function store(StoreReceiptRequest $request)
     {
-        $receipt = auth()->user()->receipts()->create(
-            $request->validated()
-        );
+        $receipt = auth()->user()->receipts()->create([
+            ...$request->validated(),
+            'status' => ReceiptStatus::Pending,
+            'expenses_count' => 0,
+        ]);
+
+        ExtractExpenses::dispatch($receipt);
 
         return redirect()->route('receipts.index')
             ->with('status', 'Receipt submitted for processing.');
